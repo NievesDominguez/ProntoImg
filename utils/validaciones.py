@@ -43,8 +43,8 @@ def validar_fila(row, codigos_existentes):
         errores.append("Stock no es un número válido")
 
     # Imagen
-    if pd.isna(row["imagen"]) or not str(row["imagen"]).startswith("http"):
-        errores.append("URL de imagen inválida")
+    #if pd.isna(row["imagen"]) or not str(row["imagen"]).startswith("http"):
+        #errores.append("URL de imagen inválida")
         
     # Cantidad
     try:
