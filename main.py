@@ -2,17 +2,19 @@ import pandas as pd
 from modelos.producto import Producto
 from firebase.productos import subir_producto
 from utils.validaciones import validar_fila
-from utils.git_tools import subir_archivo_a_github
 import unicodedata
+
+from utils.git_tools import subir_archivo_a_github
 import os
 
 CARPETA_IMAGENES_LOCAL = "img"
-REPO_LOCAL_IMG = "C:\\Users\\mnieves.domnav\\DAM\\Proyecto_Python\\img"
+REPO_LOCAL_IMG = r"C:\Users\mnieves.domnav\DAM\Proyecto_Python\img"
 REPO_URL_BASE = "https://github.com/NievesDominguez/ProntoImg/blob/main/img"
 
 def cargar_desde_excel(ruta_excel):
     df = pd.read_excel(ruta_excel)
 
+    # Normalizar nombres de columnas
     def normalizar_columna(col):
         col = col.strip().lower().replace(" ", "")
         col = ''.join(
@@ -44,21 +46,18 @@ def cargar_desde_excel(ruta_excel):
         nombre_imagen = row["imagen"]
         ruta_local = os.path.join(CARPETA_IMAGENES_LOCAL, nombre_imagen)
 
-        # Subir imagen a GitHub
         subida_ok = subir_archivo_a_github(
             ruta_local=ruta_local,
             repo_destino=REPO_LOCAL_IMG,
             mensaje_commit=f"Subida automática de {nombre_imagen}"
         )
 
-        # Mostrar URL por consola
         if subida_ok:
             url_imagen = f"{REPO_URL_BASE}/{nombre_imagen}?raw=1"
             print(f"URL pública de la imagen: {url_imagen}")
         else:
             print(f"No se pudo subir la imagen {nombre_imagen}")
 
-        # Crear producto SIN imagen_url
         producto = Producto(
             nombre=row["nombre"],
             descripcion=row["descripcion"],
@@ -66,6 +65,7 @@ def cargar_desde_excel(ruta_excel):
             categoria=row["categoria"],
             subcategoria=row["subcategoria"],
             stock=int(row["stock"]),
+            imagen_url=row["imagen"],  # <-- LO DEJO TAL CUAL LO TENÍAS
             oferta=row["oferta"] if "oferta" in row and not pd.isna(row["oferta"]) else None,
             cantidad=float(str(row["cantidad"]).replace(",", ".")),
             unidad=row["unidad"],
