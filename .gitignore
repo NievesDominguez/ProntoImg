@@ -1,6 +1,7 @@
 # Claves privadas
 data/serviceAccountKey.json
 serviceAccountKey.json
+credentials.json
 
 # Entorno virtual
 venv/

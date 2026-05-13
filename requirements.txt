@@ -1,5 +1,5 @@
-pip install firebase-admin
-pip install requests
-pip install pillow
-pip install pandas
+pip install firebase-admin;
+pip install requests;
+pip install pillow;
+pip install pandas;
 pip install openpyxl

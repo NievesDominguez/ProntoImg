@@ -3,7 +3,7 @@ from datetime import datetime
 class Producto:
     def __init__(self, nombre, descripcion, precio, categoria, subcategoria, stock,
                  imagen_url, oferta, cantidad, unidad, ubicacion,
-                 alergenos_contiene=None, alergenos_trazas=None):
+                 alergenos_contiene=None, alergenos_trazas=None, iva=None):
 
         self.nombre = nombre
         self.descripcion = descripcion
@@ -17,10 +17,9 @@ class Producto:
         self.cantidad = cantidad
         self.unidad = unidad
         self.ubicacion = ubicacion
-
-        # Nuevos campos
         self.alergenos_contiene = alergenos_contiene or []
         self.alergenos_trazas = alergenos_trazas or []
+        self.iva = iva
 
     def to_dict(self):
         return {
