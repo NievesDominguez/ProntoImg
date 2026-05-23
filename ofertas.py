@@ -6,14 +6,10 @@ from datetime import datetime
 import os
 import ssl
 
-# -------------------------------------------------------------------
-# 0. DESACTIVAR VERIFICACIÓN SSL (solución al error self-signed cert)
-# -------------------------------------------------------------------
+# Desactivar verificación SSL para evitar errores
 ssl._create_default_https_context = ssl._create_unverified_context
 
-# -------------------------------------------------------------------
-# 1. Cargar credenciales desde archivo JSON
-# -------------------------------------------------------------------
+# Cargar credenciales desde archivo JSON
 CREDENTIALS_PATH = "credentials.json"
 
 credentials = service_account.Credentials.from_service_account_file(
@@ -22,14 +18,10 @@ credentials = service_account.Credentials.from_service_account_file(
 
 db = firestore.Client(credentials=credentials, project=credentials.project_id)
 
-# -------------------------------------------------------------------
-# 2. Cargar Excel desde la hoja "Ofertas"
-# -------------------------------------------------------------------
+# Cargar Excel desde la hoja Ofertas
 df = pd.read_excel("data/DatosFirestore.xlsx", sheet_name="Ofertas")
 
-# -------------------------------------------------------------------
-# 3. Funciones auxiliares
-# -------------------------------------------------------------------
+# Funciones auxiliares
 def parse_fecha(valor):
     if isinstance(valor, datetime):
         return valor.strftime("%Y-%m-%d")
@@ -52,9 +44,7 @@ def parse_maximo(valor):
             return None
     return None
 
-# -------------------------------------------------------------------
-# 4. Subir cada fila a Firestore
-# -------------------------------------------------------------------
+# Subir cada fila a Firestore
 for _, row in df.iterrows():
 
     try:
