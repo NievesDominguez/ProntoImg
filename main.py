@@ -110,35 +110,47 @@ def cargar_desde_excel(ruta_excel):
         # Procesar alérgenos
         alergenos_contiene, alergenos_trazas = procesar_alergenos(row.get("alergenos"))
         
-        # Procesar iva
-        iva_valor = row.get("iva")
-        if pd.isna(iva_valor):
-            iva = None
-        else:
-            # Convertir a entero
-            iva_str = str(iva_valor).replace("%", "").strip()
-            try:
-                iva = int(float(iva_str))
-            except:
-                iva = None
-                print(f"⚠️ IVA no válido en fila {index+2}: {iva_valor}")
-        
-        # Crear el producto con la URL final y los alérgenos
-        producto = Producto(
-            nombre=row["nombre"],
-            descripcion=row["descripcion"],
-            precio=float(str(row["precio"]).replace(",", ".")),
-            categoria=row["categoria"],
-            subcategoria=row["subcategoria"],
-            stock=int(row["stock"]),
-            imagen_url=imagen_final,
-            oferta=row["oferta"] if "oferta" in row and not pd.isna(row["oferta"]) else None,
-            cantidad=float(str(row["cantidad"]).replace(",", ".")),
-            unidad=row["unidad"],
-            ubicacion=row["ubicacion"] if "ubicacion" in row and not pd.isna(row["ubicacion"]) else None,
-            alergenos_contiene=alergenos_contiene,
-            alergenos_trazas=alergenos_trazas,
-            iva=iva
+        # Procesar iva  
+        iva_valor = row.get("iva")  
+        if pd.isna(iva_valor):  
+            iva = None  
+        else:  
+            # Convertir a entero  
+            iva_str = str(iva_valor).replace("%", "").strip()  
+            try:  
+                iva = int(float(iva_str))  
+            except:  
+                iva = None  
+                print(f"⚠️ IVA no válido en fila {index+2}: {iva_valor}")  
+          
+        # Procesar al_peso  
+        alpeso_valor = row.get("alpeso")  
+        if pd.isna(alpeso_valor):  
+            al_peso = None  
+        else:  
+            alpeso_str = str(alpeso_valor).strip().lower()  
+            if alpeso_str == "true":  
+                al_peso = True  
+            else:  
+                al_peso = None  
+          
+        # Crear el producto con la URL final y los alérgenos  
+        producto = Producto(  
+            nombre=row["nombre"],  
+            descripcion=row["descripcion"],  
+            precio=float(str(row["precio"]).replace(",", ".")),  
+            categoria=row["categoria"],  
+            subcategoria=row["subcategoria"],  
+            stock=int(row["stock"]),  
+            imagen_url=imagen_final,  
+            oferta=row["oferta"] if "oferta" in row and not pd.isna(row["oferta"]) else None,  
+            cantidad=float(str(row["cantidad"]).replace(",", ".")),  
+            unidad=row["unidad"],  
+            ubicacion=row["ubicacion"] if "ubicacion" in row and not pd.isna(row["ubicacion"]) else None,  
+            alergenos_contiene=alergenos_contiene,  
+            alergenos_trazas=alergenos_trazas,  
+            iva=iva,  
+            al_peso=al_peso  
         )
 
         # Subir a Firestore
